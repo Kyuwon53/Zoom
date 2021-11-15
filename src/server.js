@@ -18,10 +18,9 @@ const server = http.createServer(app);
 // http , ws 서버 둘 다 작동시킬 수 있다. 
 const wss = new WebSocket.Server({server});
 
-function handleConnection (socket) {
-  console.log(socket)
-}
-
-wss.on("connection", handleConnection)
+wss.on("connection", (socket) => {
+  console.log("Connected to Browser ");
+  socket.send("hello!!!");
+})
 
 server.listen(3000, handleListen);
