@@ -5,9 +5,13 @@ socket.addEventListener("open", () => {
 });
 
 socket.addEventListener("message", (message) => {
-  console.log("Just got this: ", message, " from the server");
+  console.log("New message: ", message);
 });
 
 socket.addEventListener("close", () => {
-  console.log("Connected from server X ");
+  console.log("Disconnected from server X ");
 });
+
+setTimeout(() => {
+  socket.send("hello from the browser!!");
+}, 10000)
