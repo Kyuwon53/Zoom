@@ -20,6 +20,11 @@ const wss = new WebSocket.Server({server});
 
 wss.on("connection", (socket) => {
   console.log("Connected to Browser ");
+  socket.on("close", () => { console.log("Disconnected from Browser X "); })
+  socket.on("message", (message) => {
+    // console.log(message);
+    console.log(Buffer.from(message, "base64").toString("utf-8"));
+  })
   socket.send("hello!!!");
 })
 
