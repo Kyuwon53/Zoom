@@ -16,6 +16,12 @@ const handleListen = () => console.log(`Listening on http://localhost:3000`);
 const server = http.createServer(app);
 
 // http , ws 서버 둘 다 작동시킬 수 있다. 
-const wss = new WebSocket.server({ server });
+const wss = new WebSocket.Server({server});
+
+function handleConnection (socket) {
+  console.log(socket)
+}
+
+wss.on("connection", handleConnection)
 
 server.listen(3000, handleListen);
