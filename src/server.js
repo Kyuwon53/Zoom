@@ -1,6 +1,7 @@
 import http from "http";
 import WebSocket from "ws";
 import express from "express";
+import { Socket } from "dgram";
 
 const app = express();
 
@@ -18,14 +19,15 @@ const server = http.createServer(app);
 // http , ws 서버 둘 다 작동시킬 수 있다. 
 const wss = new WebSocket.Server({server});
 
+const sockets = [];
+
 wss.on("connection", (socket) => {
+  sockets.push(socket);
   console.log("Connected to Browser ");
   socket.on("close", () => { console.log("Disconnected from Browser X "); })
   socket.on("message", (message) => {
-    // console.log(message);
-    console.log(Buffer.from(message, "base64").toString("utf-8"));
-  })
-  socket.send("hello!!!");
-})
+    sockets.forEach((aSocket) => aSocket.send(message));
+  });
+});
 
 server.listen(3000, handleListen);
