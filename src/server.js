@@ -1,8 +1,6 @@
-import http from "http";
-import WebSocket from "ws";
 import express from "express";
-import { Socket } from "dgram";
-import { parse } from "path";
+import http from "http";
+import SocketIO from "socket.io";
 
 const app = express();
 
@@ -13,14 +11,10 @@ app.use("/public", express.static(__dirname + "/public"));
 app.get("/", (req, res) => res.render("home"));
 app.get("/*", (req,res) => res.redirect("/"));
 
-const handleListen = () => console.log(`Listening on http://localhost:3000`);
+const httpServer = http.createServer(app);
+const wsServer = new SocketIO.Server(httpServer);
 
-const server = http.createServer(app);
-
-// http , ws 서버 둘 다 작동시킬 수 있다. 
-const wss = new WebSocket.Server({server});
-
-const sockets = [];
+/* const sockets = [];
 
 wss.on("connection", (socket) => {
   sockets.push(socket);
@@ -36,6 +30,7 @@ wss.on("connection", (socket) => {
         socket["nickname"] = message.payload;
     }
   });
-});
+}); */
 
-server.listen(3000, handleListen);
+const handleListen = () => console.log(`Listening on http://localhost:3000`);
+httpServer.listen(3000, handleListen);
